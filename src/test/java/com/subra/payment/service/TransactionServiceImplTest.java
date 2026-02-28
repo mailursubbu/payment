@@ -31,6 +31,33 @@ class TransactionServiceImplTest {
     TransactionServiceImpl transactionService;
 
     @Test
+    void saveWithdrawalForNonExistingAccount() {
+        Transaction transaction = Transaction.builder()
+                .amount(10.0)
+                .operationType(OperationType.WITHDRAWAL)
+                .accountId(1)
+                .build();
+
+        TransactionDto transactionDto = TransactionDto.builder()
+                .amount(10.0)
+                .operation_type_id(3)
+                .account_id(1)
+                .build();
+
+
+        Mockito.doReturn(transaction).when(transactionMapper).transactionDtoToEntity(Mockito.any());
+//        Mockito.doReturn(transactionDto).when(transactionMapper).transactionEntityToDto(Mockito.any());
+        Mockito.doThrow(new ApplicationException("Account not found")).when(accountService).get(Mockito.anyInt());
+  //      Mockito.doReturn(transaction).when(transactionRepo).createTxn(Mockito.any());
+
+
+        ApplicationException e = assertThrows(ApplicationException.class, () -> transactionService.save(transactionDto));
+        assertEquals("Account not found", e.getMessage());
+
+    }
+
+
+    @Test
     void updateAmountSignWithdraw() {
         Transaction transaction = Transaction.builder()
                 .amount(10.0)
