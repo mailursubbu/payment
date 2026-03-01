@@ -16,7 +16,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class AccountServiceImpl implements AccountService {
+public final class AccountServiceImpl implements AccountService {
     private final AccountRepo accountRepo;
     private final AccountMapper accountMapper;
 

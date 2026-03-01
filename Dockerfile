@@ -2,6 +2,7 @@
 FROM maven:3.9.12-amazoncorretto-25 AS builder
 WORKDIR /app
 COPY . .
+ENV MAVEN_OPTS="--enable-native-access=ALL-UNNAMED"
 RUN mvn clean package 
 
 # Stage 2: Create the final runtime image

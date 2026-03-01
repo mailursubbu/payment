@@ -25,7 +25,7 @@ class TransactionServiceImplTest {
     @Mock
     TransactionMapper transactionMapper;
     @Mock
-    AccountService accountService;
+    AccountServiceImpl accountService;
 
     @InjectMocks
     TransactionServiceImpl transactionService;

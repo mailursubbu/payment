@@ -19,7 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Component
 @Slf4j
-public class TransactionServiceImpl implements TransactionService {
+public final class TransactionServiceImpl implements TransactionService {
 
     private final TransactionMapper transactionMapper;
     private final TransactionRepo transactionRepo;

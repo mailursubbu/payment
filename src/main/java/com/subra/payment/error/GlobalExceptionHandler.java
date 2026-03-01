@@ -3,8 +3,10 @@ package com.subra.payment.error;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import tools.jackson.databind.exc.InvalidFormatException;
 
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
@@ -21,6 +23,11 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ApplicationException.class)
     public ResponseEntity<ErrorResponse> handleNoSuchCustomerExistsException(ApplicationException ex) {
+        return new ResponseEntity<>(new ErrorResponse(ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleNoSuchCustomerExistsException(HttpMessageNotReadableException ex) {
         return new ResponseEntity<>(new ErrorResponse(ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
