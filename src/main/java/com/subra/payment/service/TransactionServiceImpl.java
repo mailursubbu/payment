@@ -9,6 +9,8 @@ import com.subra.payment.repository.TransactionRepo;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -16,7 +18,6 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Data
-@RequiredArgsConstructor
 @Component
 @Slf4j
 public final class TransactionServiceImpl implements TransactionService {
@@ -25,6 +26,13 @@ public final class TransactionServiceImpl implements TransactionService {
     private final TransactionRepo transactionRepo;
     private final AccountService accountService;
 
+    public TransactionServiceImpl(@Autowired TransactionMapper transactionMapper,
+                                  @Autowired @Qualifier("dbTransactionRepo") TransactionRepo transactionRepo,
+                                  @Autowired AccountService accountService) {
+        this.transactionMapper = transactionMapper;
+        this.transactionRepo = transactionRepo;
+        this.accountService = accountService;
+    }
 
     @Override
     public TransactionDto save(TransactionDto transactionDto) {

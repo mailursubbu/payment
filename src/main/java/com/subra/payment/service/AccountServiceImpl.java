@@ -8,17 +8,24 @@ import com.subra.payment.model.Account;
 import com.subra.payment.repository.AccountRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public final class AccountServiceImpl implements AccountService {
+
     private final AccountRepo accountRepo;
     private final AccountMapper accountMapper;
+
+    public AccountServiceImpl (@Autowired @Qualifier("dbAccountRepo") AccountRepo accountRepo, @Autowired  AccountMapper accountMapper) {
+        this.accountRepo = accountRepo;
+        this.accountMapper = accountMapper;
+    }
 
     @Override
     public AccountDto save(AccountDto accountDto) {
