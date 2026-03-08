@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface AccountRepo {
     Account save(Account acc);
     Optional<Account> getById(int id);
+    Account updateBalance(int accountId, Double balance);
 }

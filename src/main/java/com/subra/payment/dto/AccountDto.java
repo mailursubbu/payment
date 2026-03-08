@@ -14,4 +14,6 @@ public class AccountDto {
     private Integer account_id;
     @NonNull
     private String document_number;
+    @Nullable
+    private Double balance;
 }

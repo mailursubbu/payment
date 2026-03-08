@@ -27,7 +27,7 @@ public final class TransactionServiceImpl implements TransactionService {
     private final AccountService accountService;
 
     public TransactionServiceImpl(@Autowired TransactionMapper transactionMapper,
-                                  @Autowired @Qualifier("dbTransactionRepo") TransactionRepo transactionRepo,
+                                  @Autowired  TransactionRepo transactionRepo,
                                   @Autowired AccountService accountService) {
         this.transactionMapper = transactionMapper;
         this.transactionRepo = transactionRepo;

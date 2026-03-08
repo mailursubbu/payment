@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS account;
 
 CREATE TABLE account (
                          account_id SERIAL PRIMARY KEY,
+                         balance double precision,
                          document_number VARCHAR(255) NOT NULL
 );
 

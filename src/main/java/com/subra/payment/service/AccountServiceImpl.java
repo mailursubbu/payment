@@ -3,16 +3,12 @@ package com.subra.payment.service;
 import com.subra.payment.dto.AccountDto;
 import com.subra.payment.error.ApplicationException;
 import com.subra.payment.mapper.AccountMapper;
-import com.subra.payment.mapper.AccountMapperImpl;
 import com.subra.payment.model.Account;
 import com.subra.payment.repository.AccountRepo;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -22,7 +18,7 @@ public final class AccountServiceImpl implements AccountService {
     private final AccountRepo accountRepo;
     private final AccountMapper accountMapper;
 
-    public AccountServiceImpl (@Autowired @Qualifier("dbAccountRepo") AccountRepo accountRepo, @Autowired  AccountMapper accountMapper) {
+    public AccountServiceImpl (@Autowired AccountRepo accountRepo, @Autowired  AccountMapper accountMapper) {
         this.accountRepo = accountRepo;
         this.accountMapper = accountMapper;
     }
@@ -30,6 +26,7 @@ public final class AccountServiceImpl implements AccountService {
     @Override
     public AccountDto save(AccountDto accountDto) {
         Account account = accountMapper.accountDtoToEntity(accountDto);
+        account.setBalance(0.0);
         account =  accountRepo.save(account);
         return accountMapper.accountEntityToDto(account);
     }
@@ -42,6 +39,14 @@ public final class AccountServiceImpl implements AccountService {
             return new ApplicationException("No account with id " + accountId);
         } );
         return accountMapper.accountEntityToDto(acc);
+    }
+
+    public AccountDto updateAccountBalance(int accountId, Double balance) {
+        Account account = accountRepo.updateBalance(accountId, balance);
+        if (account.getBalance() < 0) {
+            throw new ApplicationException("Account balance is less than 0 ");
+        }
+        return accountMapper.accountEntityToDto(account);
     }
 
 }
