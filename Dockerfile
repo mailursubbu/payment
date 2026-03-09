@@ -5,5 +5,8 @@ WORKDIR /app
 # Copy the packaged JAR file into the container
 COPY target/*.jar app.jar
 
+# Activate Spring profile "db" (e.g. for DB-backed repos)
+ENV SPRING_PROFILES_ACTIVE=db
+
 # Command to run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
