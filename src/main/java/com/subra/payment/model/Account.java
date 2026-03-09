@@ -19,5 +19,6 @@ public class Account implements Comparable<Account> {
     private Integer id;
     private String documentId;
     private Double balance;
+    private Double accountLimit;
 
 }

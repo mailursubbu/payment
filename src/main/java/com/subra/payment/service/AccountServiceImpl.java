@@ -27,6 +27,7 @@ public final class AccountServiceImpl implements AccountService {
     public AccountDto save(AccountDto accountDto) {
         Account account = accountMapper.accountDtoToEntity(accountDto);
         account.setBalance(0.0);
+        account.setAccountLimit(-1000.0);
         account =  accountRepo.save(account);
         return accountMapper.accountEntityToDto(account);
     }
@@ -43,8 +44,8 @@ public final class AccountServiceImpl implements AccountService {
 
     public AccountDto updateAccountBalance(int accountId, Double balance) {
         Account account = accountRepo.updateBalance(accountId, balance);
-        if (account.getBalance() < 0) {
-            throw new ApplicationException("Account balance is less than 0 ");
+        if (account.getBalance() < account.getAccountLimit()) {
+            throw new ApplicationException("Account balance is less than the account limit of  "+ account.getAccountLimit());
         }
         return accountMapper.accountEntityToDto(account);
     }

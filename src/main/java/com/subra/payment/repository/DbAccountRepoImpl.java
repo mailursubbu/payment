@@ -25,10 +25,10 @@ public class DbAccountRepoImpl implements AccountRepo {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final SimpleJdbcInsert simpleAccountJdbcInsert;
 
-    private static final String ACCOUNT_QUERY_SQL = "SELECT account_id, document_number, balance FROM account WHERE account_id = :id";
+    private static final String ACCOUNT_QUERY_SQL = "SELECT account_id, document_number, balance, acc_limit FROM account WHERE account_id = :id";
     private static final String UPDATE_ACCOUNT_SQL = "UPDATE account set balance = :balance WHERE account_id = :id";
 
-    private static final String LOCK_ACCOUNT_SQL = "SELECT account_id, document_number, balance FROM account WHERE account_id = :id for update";
+    private static final String LOCK_ACCOUNT_SQL = "SELECT account_id, document_number, balance, acc_limit FROM account WHERE account_id = :id for update";
 
 
     @Override
@@ -36,6 +36,7 @@ public class DbAccountRepoImpl implements AccountRepo {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("document_number", acc.getDocumentId());
         parameters.put("balance", acc.getBalance());
+        parameters.put("acc_limit", acc.getAccountLimit());
         Integer id = simpleAccountJdbcInsert.executeAndReturnKey(parameters).intValue();
         acc.setId(id);
         return acc;
@@ -59,6 +60,7 @@ public class DbAccountRepoImpl implements AccountRepo {
                             .id(rs.getInt("account_id"))
                             .documentId(rs.getString("document_number"))
                             .balance(rs.getDouble("balance"))
+                            .accountLimit(rs.getDouble("acc_limit"))
                             .build()));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -75,6 +77,7 @@ public class DbAccountRepoImpl implements AccountRepo {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("balance", updatedBalance);
         parameters.put("id", accountId);
+        parameters.put("acc_limit", accountId);
         if( 1 == namedParameterJdbcTemplate.update(UPDATE_ACCOUNT_SQL, parameters) ) {
             return getById(accountId)
                     .orElseThrow(() -> new ApplicationException(String.format("Account with id %d not found", accountId)));
