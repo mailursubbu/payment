@@ -1,5 +1,7 @@
 package com.subra.payment.repository;
 
+import com.subra.payment.lock.LockService;
+import com.subra.payment.lock.LockServiceImpl;
 import com.subra.payment.model.Account;
 import org.junit.jupiter.api.Test;
 
@@ -7,7 +9,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AccountRepoImplTest {
 
-    AccountRepo accountRepo = new AccountRepoImpl();
+    LockService lockService = new LockServiceImpl();
+    AccountRepo accountRepo = new AccountRepoImpl(lockService);
     @Test
     void save() {
         Account acc =  Account.builder()

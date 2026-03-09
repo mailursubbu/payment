@@ -16,6 +16,7 @@ public class AccountMapperImpl implements AccountMapper {
                 .builder()
                 .account_id(account.getId())
                 .document_number(account.getDocumentId())
+                .balance(account.getBalance())
                 .build();
         return accountDto;
     }
@@ -25,6 +26,7 @@ public class AccountMapperImpl implements AccountMapper {
         Account account = Account.builder()
                 .id(accountDto.getAccount_id())
                 .documentId(accountDto.getDocument_number())
+                .balance(accountDto.getBalance())
                 .build();
         return account;
     }

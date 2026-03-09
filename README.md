@@ -6,6 +6,10 @@ lost on application restart.
 
 # Build and Run
 
+* mvn clean install
+* docker compose up --build
+* In a new window load f
+* docker exec -i pismo psql -U postgres -d pismo < db.sql
 * docker build -t my-springboot-app .
 * docker run -it -p 8080:8080 my-springboot-app
 

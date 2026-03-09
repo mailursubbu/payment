@@ -1,0 +1,27 @@
+services:
+    app:
+      build: .
+      ports: ["8080:8080"]
+      environment:
+        SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/pismo
+        SPRING_DATASOURCE_USERNAME: postgres
+        SPRING_DATASOURCE_PASSWORD: password123
+      depends_on: [db]
+    db:
+      image: postgres:latest
+      platform: linux/amd64
+      container_name: pismo
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: password123
+        POSTGRES_DB: pismo
+      ports:
+        - "5432:5432"
+      volumes:
+        # Postgres 18+ expects mount at /var/lib/postgresql (not .../data)
+        - postgres_data:/var/lib/postgresql
+        # Load schema and data on first start (only runs when data dir is empty)
+        - ./db.sql:/docker-entrypoint-initdb.d/01-schema.sql
+
+volumes:
+  postgres_data:
